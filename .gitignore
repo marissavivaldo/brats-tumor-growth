@@ -1,0 +1,11 @@
+# Data, weights, and outputs — never upload these to GitHub
+*.pth
+results/
+slice_cache/
+data/
+BraTS*/
+*.nii
+*.nii.gz
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store

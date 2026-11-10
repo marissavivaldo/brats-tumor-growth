@@ -1,0 +1,7 @@
+torch
+numpy
+nibabel
+scipy
+matplotlib
+scikit-image
+pillow
