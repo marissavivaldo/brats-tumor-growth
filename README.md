@@ -76,7 +76,49 @@ data/
 
 ## Results
 
-[TODO: paste the summary from `evaluate_cases.py` here — mean 3D Dice,
-mean volume bias, and size-group agreement across held-out cases.]
+Held-out evaluation from `evaluate_cases.py` (15 cases in `val_cases.txt`,
+U-Net vs expert tumor-core segmentation; growth projection at 30 days):
+
+- **Mean 3D Dice: 0.775** (median 0.888)
+- Mean volume difference (bias): **+0.9 mL**
+- Mean absolute volume difference: 5.1 mL (median 14%)
+- Same Stensjøen size group as expert: **12 / 15 cases**
+
+| Case | Expert (mL) | U-Net (mL) | Diff % | 3D Dice | Size group (expert / U-Net) |
+|---|---|---|---|---|---|
+| BraTS2021_00002 | 34.9 | 25.4 | −27% | 0.802 | medium / medium |
+| BraTS2021_00014 | 2.6 | 0.8 | −68% | 0.435 | small / small |
+| BraTS2021_00016 | 23.3 | 28.9 | +24% | 0.888 | medium / medium |
+| BraTS2021_00021 | 7.6 | 2.0 | −74% | 0.392 | medium / small † |
+| BraTS2021_00061 | 9.3 | 8.6 | −8% | 0.870 | medium / medium |
+| BraTS2021_00062 | 6.3 | 7.2 | +14% | 0.921 | medium / medium |
+| BraTS2021_00074 | 45.0 | 47.9 | +6% | 0.939 | large / large |
+| BraTS2021_00085 | 1.9 | 1.1 | −43% | 0.609 | small / small |
+| BraTS2021_00087 | 20.6 | 13.3 | −35% | 0.764 | medium / medium |
+| BraTS2021_00099 | 18.6 | 17.0 | −8% | 0.919 | medium / medium |
+| BraTS2021_00104 | 35.8 | 40.0 | +12% | 0.923 | medium / large † |
+| BraTS2021_00106 | 71.1 | 66.7 | −6% | 0.901 | large / large |
+| BraTS2021_00107 | 20.9 | 21.2 | +2% | 0.888 | medium / medium |
+| BraTS2021_00112 | 16.8 | 47.6 | +183% | 0.454 | medium / large † |
+| BraTS2021_00128 | 45.0 | 45.7 | +2% | 0.920 | large / large |
+
+† Size group differs, so the 30-day projection for this case uses a
+different size-group growth rate than the expert volume would.
+
+Notes on reading these numbers:
+
+- The mean Dice (0.775) is pulled down by three outlier cases — 00021
+  (0.392), 00014 (0.435) and 00112 (0.454). The median case scores 0.888,
+  and 9 of 15 cases score ≥ 0.87.
+- The weakest cases are the smallest tumors (00014: 2.6 mL, 00085: 1.9 mL),
+  where a few voxels of error cost a lot of Dice — plus one large
+  over-segmentation (00112, predicted 47.6 mL vs 16.8 mL expert).
+- Overall volume bias is near zero (+0.9 mL), but that averages out large
+  per-case errors in both directions; the per-case table above is the
+  honest picture.
+- Because 12/15 cases land in the correct size group, the growth
+  projection usually starts from the right growth-rate group; the three
+  mismatched cases (marked †) are where segmentation error most changes
+  the projected volume.
 
 ## ⚠ Research / educational use only — not for clinical use.
